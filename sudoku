@@ -1,0 +1,59 @@
+import pygame
+import sys
+
+pygame.init()
+
+screen_width = 800
+screen_height = 600
+screen = pygame.display.set_mode((screen_width, screen_height))
+pygame.display.set_caption("Sudoku Game")
+
+white = (255, 255, 255)
+black = (0, 0, 0)
+gray = (200, 200, 200)
+light_blue = (173, 216, 230)
+dark_blue = (0, 102, 204)
+green = (0, 128, 0)
+
+font_large = pygame.font.Font(None, 64)
+font_medium = pygame.font.Font(None, 48)
+font_small = pygame.font.Font(None, 36)
+
+def draw_text(text, font, color, x, y):
+    text_surface = font.render(text, True, color)
+    text_rect = text_surface.get_rect()
+    text_rect.center = (x, y)
+    screen.blit(text_surface, text_rect)
+
+def draw_rect(x, y, width, height, color, border_color):
+    pygame.draw.rect(screen, border_color, (x - 5, y - 5, width + 10, height + 10))
+    pygame.draw.rect(screen, color, (x, y, width, height))
+
+def start_screen():
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    pygame.quit()
+                    sys.exit()
+
+        screen.fill(white)
+
+        draw_rect(screen_width // 4 - 150, screen_height // 1.9, 150, 50, dark_blue, black)  # Easy
+        draw_rect(screen_width // 2 - 75, screen_height // 1.9, 150, 50, light_blue, black)  # Medium
+        draw_rect(screen_width // 4 * 3, screen_height // 1.9, 150, 50, green, black)       # Difficult
+
+        draw_text("Welcome to Sudoku", font_large, black, screen_width // 2, screen_height // 4)
+
+        draw_text("Select Game Mode", font_medium, black, screen_width // 2, screen_height // 2.1)
+
+        draw_text("Easy", font_small, white, screen_width // 4 - 75, screen_height // 1.75)
+        draw_text("Medium", font_small, black, screen_width // 2, screen_height // 1.75)
+        draw_text("Difficult", font_small, white, screen_width // 4 * 3 + 75, screen_height // 1.75)
+
+        pygame.display.flip()
+
+start_screen()
